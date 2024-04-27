@@ -16,7 +16,7 @@
         "url": "git+https://github.com/m-avagyan/website-performance-analyzer.git"
     },
     "bugs": {
-        "url": "https://github.com/m-avagyan/website-performance-analyzer"
+        "url": "https://github.com/m-avagyan/website-performance-analyzer/issues"
     },
     "scripts": {
         "clean": "rm report.html",
