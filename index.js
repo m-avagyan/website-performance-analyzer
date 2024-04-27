@@ -59,8 +59,12 @@ async function run(url, categories, format) {
         fs.writeFileSync(file, result.report);
 
         log(`Report is done for ${result.lhr.finalUrl}`);
-        log(`Performance score was ${result.lhr.categories.performance.score * 100}`);
-        log(`Report saved as ${reportFilePath}`);
+
+        if (categories.split(',').includes('performance')) {
+            log(`Performance score was ${result.lhr.categories.performance.score * 100}`);
+        }
+
+        log(`Report saved as ${dir}`);
     } catch (error) {
         log('Error running Analyzer: ' + error, 'error');
     } finally {
