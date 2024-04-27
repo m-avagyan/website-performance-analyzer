@@ -36,10 +36,21 @@ const argv = yargs(hideBin(process.argv))
     .help('h')
     .alias('h', 'help').argv;
 
+/**
+ *
+ * @param {string} message
+ * @param {string} level
+ */
 function log(message, level = 'info') {
     console[level](message);
 }
 
+/**
+ *
+ * @param {string} url
+ * @param {string} categories
+ * @param {'html' | 'json'} format
+ */
 async function run(url, categories, format) {
     const dir = `results/${new Date().toISOString()}`;
     await mkdirp(dir);
