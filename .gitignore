@@ -2,8 +2,7 @@
 /dist
 /coverage
 /logs
-
-report.html
+/results
 
 .DS_Store
 .idea
