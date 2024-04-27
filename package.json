@@ -1,0 +1,31 @@
+{
+    "name": "website-performance-analyzer",
+    "version": "1.0.0",
+    "description": "A NodeJS script for analyzing the website performance using lighthouse.",
+    "keywords": [
+        "lighthouse",
+        "performance",
+        "SEO"
+    ],
+    "type": "module",
+    "license": "MIT",
+    "author": "Martik Avagyan <dev@martikavagyan.com> (https://github.com/m-avagyan)",
+    "homepage": "https://github.com/m-avagyan/website-performance-analyzer?tab=readme-ov-file",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/m-avagyan/website-performance-analyzer.git"
+    },
+    "bugs": {
+        "url": "https://github.com/m-avagyan/website-performance-analyzer"
+    },
+    "scripts": {
+        "clean": "rm report.html",
+        "analyze": "node index.js"
+    },
+    "dependencies": {
+        "chrome-launcher": "^1.1.1",
+        "lighthouse": "^12.0.0",
+        "node-fetch": "^3.3.2",
+        "yargs": "^17.7.2"
+    }
+}
