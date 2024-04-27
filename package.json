@@ -19,12 +19,12 @@
         "url": "https://github.com/m-avagyan/website-performance-analyzer/issues"
     },
     "scripts": {
-        "clean": "rm report.html",
         "analyze": "node index.js"
     },
     "dependencies": {
         "chrome-launcher": "^1.1.1",
         "lighthouse": "^12.0.0",
+        "mkdirp": "^3.0.1",
         "node-fetch": "^3.3.2",
         "yargs": "^17.7.2"
     }
