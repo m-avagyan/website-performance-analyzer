@@ -4,6 +4,7 @@ import fs from 'fs';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import fetch from 'node-fetch';
+import { mkdirp } from 'mkdirp';
 
 if (!globalThis.fetch) {
     globalThis.fetch = fetch;
@@ -18,34 +19,57 @@ const argv = yargs(hideBin(process.argv))
         demandOption: 'URL is required',
         nargs: 1,
     })
+    .option('categories', {
+        alias: 'c',
+        describe: 'Categories to analyze (comma-separated, no spaces)',
+        type: 'string',
+        default: 'performance,accessibility,best-practices,seo',
+    })
+    .option('format', {
+        alias: 'f',
+        describe: 'Report format',
+        choices: ['html', 'json'],
+        default: 'html',
+    })
     .version('version', 'Display version information', '1.0.0')
     .alias('v', 'version')
     .help('h')
     .alias('h', 'help').argv;
 
-async function run(url) {
+function log(message, level = 'info') {
+    console[level](message);
+}
+
+async function run(url, categories, format) {
+    const dir = `results/${new Date().toISOString()}`;
+    await mkdirp(dir);
+
+    const chrome = await launch({ chromeFlags: ['--headless'] });
+    const options = {
+        logLevel: 'info',
+        output: format,
+        onlyCategories: categories.split(','),
+        port: chrome.port,
+    };
+
     try {
-        const chrome = await launch({ chromeFlags: ['--headless'] });
-        const options = {
-            logLevel: 'info',
-            output: 'html',
-            onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
-            port: chrome.port,
-        };
-
         const result = await lighthouse(url, options);
+        const file = `${dir}/report.${format}`;
 
-        console.info('Report is done for', result.lhr.finalUrl);
-        console.info('Performance score was', result.lhr.categories.performance.score * 100);
+        fs.writeFileSync(file, result.report);
 
-        await chrome.kill();
-        fs.writeFileSync('report.html', result.report);
-
-        console.info('Lighthouse report is saved as report.html');
+        log(`Report is done for ${result.lhr.finalUrl}`);
+        log(`Performance score was ${result.lhr.categories.performance.score * 100}`);
+        log(`Report saved as ${reportFilePath}`);
     } catch (error) {
-        console.error('Error running Lighthouse:', error);
-        process.exit(1);
+        log('Error running Analyzer: ' + error, 'error');
+    } finally {
+        await chrome.kill();
     }
 }
 
-run(argv.url);
+run(argv.url, argv.categories, argv.format).catch((error) => {
+    log('Failed to run Analyzer: ' + error, 'error');
+
+    process.exit(1);
+});
