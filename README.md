@@ -15,8 +15,7 @@ Installation
 
 Execution
 
--   `npm run clean` - removing the generated `report.html` file
--   `npm run analyze -u <URL>` - generating a new report for your website
+-   `npm run analyze -- -u <URL> -c <CATEGORIES> -f <FORMAT>` - generating a new report for your website
 
 ---
 
