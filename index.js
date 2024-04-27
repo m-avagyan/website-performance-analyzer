@@ -5,6 +5,11 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import fetch from 'node-fetch';
 import { mkdirp } from 'mkdirp';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
+const { version } = require('./package.json');
 
 if (!globalThis.fetch) {
     globalThis.fetch = fetch;
@@ -31,7 +36,7 @@ const argv = yargs(hideBin(process.argv))
         choices: ['html', 'json'],
         default: 'html',
     })
-    .version('version', 'Display version information', '1.0.0')
+    .version(version)
     .alias('v', 'version')
     .help('h')
     .alias('h', 'help').argv;
